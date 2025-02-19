@@ -25,17 +25,16 @@ Install-Module -Name SetLocationEnhancer
 To add a new behavior, use the `Add-SetLocationBehavior` function:
 
 ```powershell
-function Import-Dotenv {
-	param(
-		[string]$Path
-	)
+Add-SetLocationBehavior -Name 'LoadEnv' -Behavior {
+	param($Path)
+	$envFile = Join-Path -Path ($Path) -ChildPath ".env"
 
-	if (-Not (Test-Path $Path)) {
-		Write-Error "The specified .env file does not exist: $Path"
+	if (-Not (Test-Path $envFile)) {
+		Write-Error "The specified .env file does not exist: $envFile"
 		return
 	}
 
-	Get-Content -Path $Path | ForEach-Object {
+	Get-Content -Path $envFile | ForEach-Object {
 		# Trim whitespace and skip empty lines or comments
 		$_ = $_.Trim()
 		if (-Not [string]::IsNullOrWhiteSpace($_) -and -Not $_.StartsWith('#')) {
@@ -50,15 +49,7 @@ function Import-Dotenv {
 		}
 	}
 
-	Write-Host "Environment variables loaded from $Path"
-}
-
-Add-SetLocationBehavior -Name 'LoadEnv' -Behavior {
-    param($Path)
-    $envFile = Join-Path -Path (Get-Location) -ChildPath ".env"
-    if (Test-Path $envFile) {
-        Import-Dotenv -Path $envFile
-    }
+	Write-Host "Environment variables loaded from $envFile"
 }
 ```
 
