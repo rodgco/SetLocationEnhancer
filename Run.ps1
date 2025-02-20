@@ -4,7 +4,7 @@ param (
 )
 
 function Publish {
-    if (-not $env:NuGetApiKey) {
+    if (-not $env:NUGET_API_KEY) {
         Write-Host "NuGetApiKey is not set"
         return
     }
