@@ -1,0 +1,35 @@
+name: Test and Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test-and-publish:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Install Pester
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -Force -SkipPublisherCheck
+        
+    - name: Run Tests
+      shell: pwsh
+      run: |
+        ./Run.ps1 -Task Test
+        
+    - name: Publish to PowerShell Gallery
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      shell: pwsh
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        ./Run.ps1 -Task Publish 

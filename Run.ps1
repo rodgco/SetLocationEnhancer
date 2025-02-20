@@ -8,7 +8,7 @@ function Publish {
         Write-Host "NuGetApiKey is not set"
         return
     }
-    Publish-Module -Path "." -NuGetApiKey $env:NuGetApiKey
+    Publish-Module -Path "." -NuGetApiKey $env:NUGET_API_KEY
 }
 
 function Test {
