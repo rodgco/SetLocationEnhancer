@@ -76,12 +76,6 @@ Disable-SetLocationBehavior -Name "MyBehavior"
 Enable-SetLocationBehavior -Name "MyBehavior"
 ```
 
-Change behavior order (position starts at 0):
-
-```powershell
-Move-SetLocationBehavior -Name "MyBehavior" -Position 2
-```
-
 Reset to default behaviors:
 
 ```powershell

@@ -76,49 +76,6 @@ function Enable-SetLocationBehavior {
     }
 }
 
-# Function to move a behavior to a new position in the array
-function Move-SetLocationBehavior {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$Name,
-        
-        [Parameter(Mandatory=$true)]
-        [int]$Position
-    )
-    
-    # Find the behavior
-    $behaviorIndex = 0..($script:SetLocationBehaviors.Count - 1) | Where-Object { 
-        $script:SetLocationBehaviors[$_].name -eq $Name 
-    }
-
-    if ($null -eq $behaviorIndex) {
-        Write-Warning "Behavior '$Name' not found"
-        return
-    }
-
-    # Validate position
-    if ($Position -lt 0 -or $Position -ge $script:SetLocationBehaviors.Count) {
-        Write-Warning "Position must be between 0 and $($script:SetLocationBehaviors.Count - 1)"
-        return
-    }
-
-    # Store the behavior to move
-    $behaviorToMove = $script:SetLocationBehaviors[$behaviorIndex]
-    
-    # Remove from current position
-    $script:SetLocationBehaviors = @(
-        $script:SetLocationBehaviors[0..($behaviorIndex-1)]
-        $script:SetLocationBehaviors[($behaviorIndex+1)..($script:SetLocationBehaviors.Count-1)]
-    ) | Where-Object { $null -ne $_ }
-
-    # Insert at new position
-    $script:SetLocationBehaviors = @(
-        $script:SetLocationBehaviors[0..($Position-1)]
-        $behaviorToMove
-        $script:SetLocationBehaviors[$Position..($script:SetLocationBehaviors.Count-1)]
-    ) | Where-Object { $null -ne $_ }
-}
-
 # Cleanup when module is removed
 $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
     # Restore original Set-Location behavior

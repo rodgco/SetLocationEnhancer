@@ -75,13 +75,4 @@ Describe "SetLocationEnhancer Module" {
         $Result = Set-Location -Path 'TestDrive:'
         $Result | Should -Be @('TestDrive: #3', 'TestDrive: #2', 'TestDrive: #1') -Because "the enabled behavior should be executed"
     }
-
-    It "should move a behavior to a new position" {
-        Add-SetLocationBehavior -Name 'TestBehavior1' -Behavior { param($Path) return "$Path #1" }
-        Add-SetLocationBehavior -Name 'TestBehavior2' -Behavior { param($Path) return "$Path #2" }
-        Add-SetLocationBehavior -Name 'TestBehavior3' -Behavior { param($Path) return "$Path #3" }
-        Move-SetLocationBehavior -Name 'TestBehavior1' -Position 2
-        $Result = Set-Location -Path 'TestDrive:'
-        $Result | Should -Be @('TestDrive: #3', 'TestDrive: #1', 'TestDrive: #2') -Because "the behavior should be moved to the new position"
-    }
 }
