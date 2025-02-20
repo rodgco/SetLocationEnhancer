@@ -1,11 +1,5 @@
 # Change to array of hashtables
-$SetLocationBehaviors = @(
-    @{
-        name = 'Original'
-        behavior = { param($Path) Microsoft.PowerShell.Management\Set-Location -Path $Path }
-        active = $true
-    }
-)
+$SetLocationBehaviors = @()
 
 # Function to add new behavior with a name
 function Add-SetLocationBehavior {
@@ -22,13 +16,7 @@ function Add-SetLocationBehavior {
 
 # Function to reset the behaviors
 function Reset-SetLocationBehaviors {
-    $script:SetLocationBehaviors = @(
-        @{
-            name = 'Original'
-            behavior = { param($Path) Microsoft.PowerShell.Management\Set-Location -Path $Path }
-            active = $true
-        }
-    )
+    $script:SetLocationBehaviors = @()
 }
 
 # Function to remove a behavior by name
@@ -41,7 +29,7 @@ function Remove-SetLocationBehavior {
 
 # Function to list all behaviors
 function Get-SetLocationBehaviors {
-    $script:SetLocationBehaviors | Select-Object -ExpandProperty name
+    $script:SetLocationBehaviors
 }
 
 # Override Set-Location to call each function in the behaviors
@@ -56,6 +44,8 @@ function Set-Location {
     foreach ($func in $behaviorArray) {
         & $func $Path
     }
+	# Run the original Set-Location
+	Microsoft.PowerShell.Management\Set-Location -Path $Path
 }
 
 # Function to disable a behavior by name
