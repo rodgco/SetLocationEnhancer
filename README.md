@@ -9,6 +9,9 @@ SetLocationEnhancer is a PowerShell module that enhances the `Set-Location` cmdl
 - **Add Custom Behaviors**: Easily add new behaviors to execute when changing directories.
 - **Remove Behaviors**: Remove specific behaviors by name.
 - **List Behaviors**: View all registered behaviors and their names.
+- **Disable/Enable Behaviors**: Temporarily disable behaviors without removing them.
+- **Reorder Behaviors**: Change the execution order of behaviors.
+- **Reset Behaviors**: Clear all registered behaviors.
 
 ## Installation
 
@@ -30,7 +33,6 @@ Add-SetLocationBehavior -Name 'LoadEnv' -Behavior {
 	$envFile = Join-Path -Path ($Path) -ChildPath ".env"
 
 	if (-Not (Test-Path $envFile)) {
-		Write-Error "The specified .env file does not exist: $envFile"
 		return
 	}
 
@@ -92,11 +94,11 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.txt) file for details.
 
 ## Author
 
-Your Name
+Rodrigo Couto
 
 ## Acknowledgments
 
